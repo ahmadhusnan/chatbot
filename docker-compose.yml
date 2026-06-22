@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # ── Backend-for-Frontend (Fastify + OpenAI) ──────────────────────────────
+  bff:
+    container_name: chatbot_bff
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - REDIS_URL=redis://redis_cache:6379
+      - JWT_SECRET=${JWT_SECRET}
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - LLM_MODEL=${LLM_MODEL:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:5173}
+    volumes:
+      - ./backend/src:/app/src   # Hot-reload: sync local source changes into container
+    depends_on:
+      - redis_cache
+    networks:
+      - chatbot_net
+    restart: unless-stopped
+
+  # ── Redis (Ephemeral Session Cache) ──────────────────────────────────────
+  redis_cache:
+    image: redis:7-alpine
+    container_name: chatbot_redis
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --save ""
+    ports:
+      - "127.0.0.1:6379:6379"
+    networks:
+      - chatbot_net
+    restart: unless-stopped
+
+  # ── Frontend (Vite Dev Server) ───────────────────────────────────────────
+  frontend:
+    container_name: chatbot_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    volumes:
+      - ./frontend/src:/app/src           # Hot-reload: sync widget source
+      - ./frontend/index.html:/app/index.html  # Hot-reload: sync host page
+    depends_on:
+      - bff
+    networks:
+      - chatbot_net
+    restart: unless-stopped
+
+networks:
+  chatbot_net:
+    driver: bridge

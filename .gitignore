@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+dist/
+
+# Environment secrets
+.env
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+*.log
+npm-debug.log*
+
+# Document
+*.pptx

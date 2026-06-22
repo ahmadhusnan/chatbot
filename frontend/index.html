@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot Widget — Demo Host Page</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 640px;
+    }
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: rgba(99,102,241,0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99,102,241,0.25);
+      margin-bottom: 20px;
+    }
+    .instructions {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px 32px;
+      text-align: left;
+      margin-top: 24px;
+    }
+    .instructions h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #c084fc;
+      margin-bottom: 14px;
+    }
+    .instructions code {
+      display: block;
+      background: rgba(0,0,0,0.3);
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: #a5b4fc;
+      white-space: pre;
+      overflow-x: auto;
+      margin-top: 8px;
+      font-family: 'Fira Code', 'Cascadia Code', monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <span class="badge">🟢 Live Demo</span>
+    <h1>Chatbot Widget Integration</h1>
+    <p>
+      This is a mock host website demonstrating the chatbot widget running in
+      an isolated Shadow DOM. Click the chat bubble in the bottom-right corner
+      to start a conversation.
+    </p>
+
+    <div class="instructions">
+      <h2>Embed on any website</h2>
+      <code>&lt;script src="https://cdn.example.com/chatbot.js" defer&gt;&lt;/script&gt;
+&lt;chatbot-widget api-url="https://api.example.com" theme="dark"&gt;&lt;/chatbot-widget&gt;</code>
+    </div>
+  </div>
+
+  <!-- The widget itself, loaded as a module during development -->
+  <script type="module" src="/src/widget.ts"></script>
+  <chatbot-widget api-url="http://localhost:3000" theme="dark"></chatbot-widget>
+</body>
+</html>
